@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="flex my-8 justify-center">
-    <h2 class="text-4xl">My Posts</h2>
+    <h2 class="text-4xl">All Posts</h2>
 </div>
 
 <div class="grid grid-cols-1">
@@ -13,8 +13,8 @@
             <div class="flex">
                 <a href="#">
                     <div class="user-container h-12 w-12 mb-2 flex">
-                        {% if profile.image %}
-                        <img class="rounded-full" src="{{profile.image.url}}" alt="">
+                        {% if post.user.profile.image %}
+                        <img class="rounded-full" src="{{post.user.profile.image.url}}" alt="">
                         {% endif %}
                         <div class="px-3 flex items-center italic"><strong>{{post.user}}</strong></div>
                     </div>

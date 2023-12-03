@@ -22,3 +22,7 @@ def my_posts(request):
     posts = Post.objects.filter(user=current_user)
     profile = current_user.profile
     return render(request, 'user/index.html', {'posts': posts, 'profile': profile})
+
+def feed(request):
+    posts = Post.objects.all().order_by('-created')
+    return render(request, 'posts/feed.html', {'posts': posts})
