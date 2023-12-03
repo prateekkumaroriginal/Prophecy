@@ -2,9 +2,30 @@
 
 {% block page_title %}Create New Post{% endblock page_title %}
 {% block content %}
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button type="submit">Post</button>
-</form>
+
+<h1 class="text-4xl mt-10 text-center">📰 Create New Post 🖼</h1>
+
+<div class="container p-5 flex justify-center">
+    <form method="post" enctype="multipart/form-data" class="bg-gray-200 shadow-2xl m-10 rounded p-10 w-3/5">
+        {% csrf_token %}
+
+        <div class="mb-4">
+            <label class="text-gray-700 text-xl font-bold" for="id_title">Title</label>
+            <div class="shadow-lg appearance-none rounded">{{form.title}}</div>
+        </div>
+        
+        <div class="mb-4">
+            <label class="text-gray-700 text-xl font-bold" for="id_image">Image</label>
+            <div class="p-2 bg-white shadow-lg appearance-none rounded mt-1">{{form.image}}</div>
+        </div>
+        
+        <div class="mb-4">
+            <label class="text-gray-700 text-xl font-bold" for="id_title">Caption</label>
+            <div class="shadow-lg appearance-none rounded flex mt-1">{{form.caption}}</div>
+        </div>
+
+        <button type="submit" class="bg-gray-600 hover:bg-gray-700 rounded text-white my-5 px-5 py-2">Save</button>
+    </form>
+</div>
+
 {% endblock content %}

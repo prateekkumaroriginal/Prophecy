@@ -3,10 +3,40 @@
 {% block page_title %}Login{% endblock page_title %}
 
 {% block content %}
-    <form method="post">
-        {% csrf_token %}
-        {{form.as_p}}
-        <button type="submit">Login</button>
-    </form>
-    <a href={% url "password_reset" %}>Forgot Password</a>
+    <h1 class="text-4xl mt-10 text-center">🗝 Login User 👦🏻</h1>
+    <div class="error-container text-red-600 text-lg text-center">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% if form.errors %}
+            {% for field in form %}
+                {{field.errors}}
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <div class="container p-5 flex justify-center">
+        <form method="post" class="bg-green-200 shadow-2xl m-10 rounded p-10 w-2/5">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="mb-4">
+                <label class="text-gray-700 text-xl font-bold" for="{{field.name}}">{{field.label | title}}</label>
+                <div class="shadow-lg appearance-none rounded">{{field}}</div>
+            </div>
+            {% endfor %}
+            
+            <div class="flex justify-center pt-5">    
+                <button class="text-white bg-green-800 px-5 py-2 rounded hover:bg-green-900" type="submit">Login</button>
+            </div>
+
+            <div class="flex justify-center py-3">
+                <a class="text-indigo-700 underline hover:text-blue-900" href={% url "password_reset" %}>Forgot Password</a>
+            </div>
+        </form>
+    </div>
 {% endblock content %}

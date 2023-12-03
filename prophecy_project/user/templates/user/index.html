@@ -1,11 +1,39 @@
 {% extends "user/base.html" %}
+{% load static %}
 
 {% block content %}
-<h1>Homepage for users view</h1>
-{% for post in posts %}
-    <h1>{{post.title}}</h1>
-    <img src={{post.image.url}} alt="">
-    <p>{{post.caption}}</p>
-    <br><br>
-{% endfor %}
+<div class="flex my-8 justify-center">
+    <h2 class="text-4xl">My Posts</h2>
+</div>
+
+<div class="grid grid-cols-1">
+    {% for post in posts %}
+    <div class="flex justify-center">
+        <div class="mb-20 md:mx-60 lg:mx-80">
+            <div class="flex">
+                <a href="#">
+                    <div class="user-container h-12 w-12 mb-2 flex">
+                        <img class="rounded-full" src="{{profile.image.url}}" alt="">
+                        <div class="px-3 flex items-center italic"><strong>{{post.user}}</strong></div>
+                    </div>
+                </a>
+            </div>
+            <div class="rounded-md overflow-hidden">
+                <img class="h-96 w-96 shadow-lg" src={{post.image.url}} alt="">
+            </div>
+            <div>
+                <div class="icon-container mt-1 flex items-center gap-3">
+                    <img class="w-8 h-8" src={% static 'posts/heart.svg' %} alt="">
+                    <img class="w-7 h-7" src={% static 'posts/comment.svg' %} alt="">
+                    <img class="w-8 h-8" src={% static 'posts/share.svg' %} alt="">
+                </div>
+            </div>
+            <div class="break-word w-96">
+                <strong class="text-lg">{{post.title}}</strong>
+                <p>{{post.caption}}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
 {% endblock content %}

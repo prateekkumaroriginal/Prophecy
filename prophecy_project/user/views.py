@@ -1,10 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from .forms import LoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm
-from django.http import HttpResponse
 from .models import Profile
 from posts.models import Post
+from django.contrib import messages
 
 # Create your views here.
 def user_login(request):
@@ -15,9 +15,10 @@ def user_login(request):
             user = authenticate(request, username=data['username'], password=data['password'])
             if user:
                 login(request, user)
-                return HttpResponse('User Authenticated')
+                return redirect('feed')
             else:
-                return HttpResponse('Invalid Login')
+                messages.error(request, 'Invalid Credentials')
+                return redirect('login')
     else:
         form = LoginForm()
     return render(request, 'user/login_form.html', {'form': form})

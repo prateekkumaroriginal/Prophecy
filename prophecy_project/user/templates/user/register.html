@@ -3,9 +3,22 @@
 {% block page_title %}Register{% endblock page_title %}
 
 {% block content %}
-    <form method="post">
-        {% csrf_token %}
-        {{user_form.as_p}}
-        <button type="submit">Register</button>
-    </form>
+    <h1 class="text-4xl mt-10 flex justify-center">🖐🏻 Register</h1>
+    <div class="container p-5 flex justify-center">
+        <form method="post" class="bg-indigo-200 shadow-2xl m-10 rounded p-10 w-2/5">
+            {% csrf_token %}
+            {% for field in user_form %}
+            <div class="mb-4">
+                <label class="text-gray-700 text-xl font-bold" for="id_username">{{field.label | title}}</label>
+                <div class="shadow-lg appearance-none rounded">{{field}}</div>
+            </div>
+            {% endfor %}
+            
+            <div class="flex justify-center pt-5">
+                <button class="text-white bg-indigo-800 px-5 py-2 rounded hover:bg-indigo-900" type="submit">Register</button>
+            </div>
+
+        </form>
+    </div>
 {% endblock content %}
+

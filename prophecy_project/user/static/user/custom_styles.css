@@ -1,0 +1,23 @@
+input:focus {
+    outline: none;
+}
+
+input:not([type='checkbox']):not([type='file']) {
+    width: 100%;
+    padding: .25rem;
+    border-radius: 0.25rem;
+}
+
+textarea{
+    width: 100%;
+    resize: vertical;
+    min-height: 3rem;
+    max-width: 100%;
+    padding: .25rem;
+    border-radius: 0.25rem;
+
+}
+
+textarea:focus{
+    outline: none;
+}

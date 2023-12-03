@@ -3,11 +3,25 @@
 {% block page_title %}Edit Profile{% endblock page_title %}
 
 {% block content %}
-<h1>Edit Profile</h1>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{user_form.as_p}}
-    {{profile_form.as_p}}
-    <button type="submit">Save</button>
-</form>
+<h1 class="text-4xl mt-10 text-center">✏ Edit Profile 🖊</h1>
+
+<div class="container p-5 flex justify-center">
+    <form method="post" enctype="multipart/form-data" class="bg-gray-200 shadow-2xl m-10 rounded p-10 w-3/5">
+        {% csrf_token %}
+        {% for field in user_form %}
+        <div class="mb-4">
+            <label class="text-gray-700 text-xl font-bold" for="id_{{field.name}}">{{field.label | title}}</label>
+            <div class="shadow-lg appearance-none rounded">{{field}}</div>
+        </div>
+        {% endfor %}
+
+        <div class="mb-4">
+            <label class="text-gray-700 text-xl font-bold" for="id_image">{{profile_form.image.label | title}}</label>
+            <div class="p-2 bg-white shadow-lg appearance-none rounded mt-1">{{profile_form.image}}</div>
+        </div>
+        
+        <button type="submit" class="bg-gray-600 hover:bg-gray-700 rounded text-white my-5 px-5 py-2">Save</button>
+    </form>
+</div>
+
 {% endblock content %}

@@ -20,4 +20,5 @@ def create_post(request):
 def my_posts(request):
     current_user = request.user
     posts = Post.objects.filter(user=current_user)
-    return render(request, 'user/index.html', {'posts': posts})
+    profile = current_user.profile
+    return render(request, 'user/index.html', {'posts': posts, 'profile': profile})
