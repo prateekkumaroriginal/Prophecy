@@ -14,18 +14,11 @@ class UserRegistrationForm(forms.ModelForm):
         model = User
         fields = ['username', 'email', 'first_name', 'last_name']
 
-    # def check_password(self):
-    #     if self.cleaned_data['password'] != self.cleaned_data['password2']:
-    #         raise forms.ValidationError('Passwords do not match')
-    #     return self.cleaned_data['password2']
+    def check_password(self):
+        if self.cleaned_data['password'] != self.cleaned_data['password2']:
+            raise forms.ValidationError('Passwords do not match')
+        return self.cleaned_data['password2']
 
-    def clean(self):
-        cleaned_data = super().clean()
-        password = cleaned_data.get("password")
-        password2 = cleaned_data.get("password2")
-
-        if password != password2:
-            raise forms.ValidationError("Passwords do not match!")
     
 class UserEditForm(forms.ModelForm):
     class Meta:
