@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .forms import PostForm
 from django.contrib.auth.decorators import login_required
 from .models import Post
+from django.db.models import Exists, OuterRef
 
 # Create your views here.
 @login_required
@@ -24,7 +25,11 @@ def my_posts(request):
     return render(request, 'user/index.html', {'posts': posts, 'profile': profile})
 
 def feed(request):
-    posts = Post.objects.all().order_by('-created')
+    posts = Post.objects.annotate(
+        liked_by_current_user=Exists(
+            Post.objects.filter(id=OuterRef('id'), liked_by=request.user)
+        )
+    ).order_by('-created')
     return render(request, 'posts/feed.html', {'posts': posts})
 
 @login_required
