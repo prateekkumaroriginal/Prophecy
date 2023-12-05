@@ -23,11 +23,27 @@
             <div class="rounded-md overflow-hidden">
                 <img class="h-96 w-96 shadow-lg" src={{post.image.url}} alt="">
             </div>
-            <div>
+            <div class="flex justify-between pr-4">
                 <div class="icon-container mt-1 flex items-center gap-3">
-                    <img class="w-8 h-8" src={% static 'posts/heart.svg' %} alt="">
+                    <a class="btn-like cursor-pointer" id={{post.id}}>
+                        {% if user in post.liked_by.all %}
+                        <img class="w-8 h-8" src={% static 'posts/heart_filled.svg' %} alt="">
+                        {% else %}
+                        <img class="w-8 h-8" src={% static 'posts/heart.svg' %} alt="">
+                        {% endif %}
+                    </a>
                     <img class="w-7 h-7" src={% static 'posts/comment.svg' %} alt="">
                     <img class="w-8 h-8" src={% static 'posts/share.svg' %} alt="">
+                </div>
+                <div class="text-sm flex items-center text-gray-700 font-bold">
+                    {% if post.liked_by.count < 1 %}
+                    {% elif post.liked_by.count == 1 %}
+                    {{post.liked_by.first}} likes this post
+                    {% elif post.liked_by.count == 2 %}
+                    {{post.liked_by.first}} and 1 other likes this post
+                    {% else %}
+                    {{post.liked_by.first}} & {{post.liked_by.count | add:-1}} others like this post
+                    {% endif %}
                 </div>
             </div>
             <div class="break-word w-96">
@@ -38,4 +54,25 @@
     </div>
     {% endfor %}
 </div>
+
+{% if user.is_authenticated %}
+    <script type="text/javascript">
+        window.CSRF_TOKEN = "{{csrf_token}}"
+        $('.btn-like').on('click', function () {
+            let post_id = this.id;
+            $('#' + post_id).children('img').attr('src', function (index, attr) {
+                return attr == '/static/posts/heart.svg' ? '/static/posts/heart_filled.svg' : '/static/posts/heart.svg';
+            });
+            $.ajax({
+                method: "POST",
+                url: "/posts/like/",
+                data: {
+                    post_id: post_id,
+                    csrfmiddlewaretoken: window.CSRF_TOKEN
+                }
+            })
+        })
+    </script>
+{% endif %}
+
 {% endblock content %}
