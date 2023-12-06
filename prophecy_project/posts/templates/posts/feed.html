@@ -20,9 +20,11 @@
                     </div>
                 </a>
             </div>
+
             <div class="rounded-md overflow-hidden">
                 <img class="h-96 w-96 shadow-lg" src={{post.image.url}} alt="">
             </div>
+
             <div class="flex justify-between pr-4">
                 <div class="icon-container mt-1 flex items-center gap-3">
                     <a class="btn-like cursor-pointer" id={{post.id}}>
@@ -32,9 +34,9 @@
                         <img class="w-8 h-8" src={% static 'posts/heart.svg' %} alt="">
                         {% endif %}
                     </a>
-                    <img class="w-7 h-7" src={% static 'posts/comment.svg' %} alt="">
                     <img class="w-8 h-8" src={% static 'posts/share.svg' %} alt="">
                 </div>
+
                 <div class="text-sm flex items-center text-gray-700 font-bold">
                     {% if post.liked_by.count < 1 %}
                     {% elif post.liked_by.count == 1 %}
@@ -46,9 +48,29 @@
                     {% endif %}
                 </div>
             </div>
+
             <div class="break-word w-96">
                 <strong class="text-lg">{{post.title}}</strong>
                 <p>{{post.caption}}</p>
+            </div>
+
+            <div>
+                <form method="post" class="w-full py-5">
+                    {% csrf_token %}
+                    <input type="hidden" name="post_id" value="{{post.id}}">
+                    <input type="hidden" name="posted_by" value="{{user}}">
+                    <div class="mb-2">
+                        <div class="shadow-lg appearance-none border-2 border-gray-300 rounded focus-within:border-gray-900 rounded flex mt-1">{{comment_form.body}}</div>
+                    </div>
+                        <button class="bg-gray-500 text-white text-sm px-4 py-1 mx-1" type="submit">Comment</button>
+                </form>
+            </div>
+            
+            <div class="mt-5">
+                {% for comment in post.comments.all %}
+                <strong>{{comment.posted_by}}</strong>: {{comment.body}}
+                <br>
+                {% endfor %}
             </div>
         </div>
     </div>
@@ -61,11 +83,11 @@
         $('.btn-like').on('click', function () {
             let post_id = this.id;
             $('#' + post_id).children('img').attr('src', function (index, attr) {
-                return attr == '/static/posts/heart.svg' ? '/static/posts/heart_filled.svg' : '/static/posts/heart.svg';
+                return attr == '{% static "posts/heart.svg" %}' ? '{% static "posts/heart_filled.svg" %}' : '{% static "posts/heart.svg" %}';
             });
             $.ajax({
                 method: "POST",
-                url: "/posts/like/",
+                url: "{% url 'like_post' %}",
                 data: {
                     post_id: post_id,
                     csrfmiddlewaretoken: window.CSRF_TOKEN
